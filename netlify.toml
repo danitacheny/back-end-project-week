@@ -1,0 +1,3 @@
+[build]
+  base = "notes/"
+  publish = "notes/build/"
