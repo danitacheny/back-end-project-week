@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/UserSchema');
 
@@ -13,10 +14,10 @@ router.post('/register', (req, res) => {
   const user = new User(newUser);
   user
     .save()
-    .then(savedUser => {
+    .then((savedUser) => {
       res.status(200).json(savedUser);
     })
-    .catch(err => {
+    .catch((err) => {
       res
         .status(500)
         .json({ msg: 'There was an error saving the user.', error: err });
@@ -24,7 +25,6 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  const session = req.session;
   const { username, password } = req.body;
   if (!username || !password) {
     res.status(400).json({
@@ -33,28 +33,38 @@ router.post('/login', (req, res) => {
   }
   User.findOne({ username })
     .populate('notes')
-    .then(foundUser => {
-      if (!foundUser) return res.status(400).json({ msg: 'Invalid credentials.' });
+    .then((foundUser) => {
+      if (!foundUser)
+        return res.status(400).json({ msg: 'Invalid credentials.' });
       foundUser
         .checkPassword(password, res)
-        .then(isValid => {
+        .then((isValid) => {
           if (isValid) {
-            session.username = username;
-            res
-              .status(200)
-              .json({ username: foundUser.username, notes: foundUser.notes });
+            const token = jwt.sign(
+              { username: foundUser.username },
+              process.env.TOKEN_SECRET,
+              { expiresIn: '1h' }
+            );
+            res.status(200).json({ token });
           } else {
             res.status(400).json({ msg: 'Invalid credentials.' });
           }
         })
-        .catch(err => res.error(err));
-    }).catch(err => {
-      res.status(500).json({ err, msg: 'There was an error communicating with the database.' })
+        .catch((err) =>
+          res
+            .status(401)
+            .json({ err, msg: 'There was an error hashing the password.' })
+        );
     })
+    .catch((err) => {
+      res.status(500).json({
+        err,
+        msg: 'There was an error communicating with the database.',
+      });
+    });
 });
 
 router.post('/logout', (req, res) => {
-  delete req.session.username;
   res.status(200).json({ msg: 'Logged out.' });
 });
 
