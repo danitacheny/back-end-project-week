@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
   User.findOne({ username })
     .populate('notes')
     .then(foundUser => {
-      if (!foundUser) res.status(404).json({ msg: 'User does not exist' });
+      if (!foundUser) return res.status(400).json({ msg: 'Invalid credentials.' });
       foundUser
         .checkPassword(password, res)
         .then(isValid => {
@@ -44,11 +44,13 @@ router.post('/login', (req, res) => {
               .status(200)
               .json({ username: foundUser.username, notes: foundUser.notes });
           } else {
-            res.status(400).json({ msg: 'Incorrect password' });
+            res.status(400).json({ msg: 'Invalid credentials.' });
           }
         })
         .catch(err => res.error(err));
-    });
+    }).catch(err => {
+      res.status(500).json({ err, msg: 'There was an error communicating with the database.' })
+    })
 });
 
 router.post('/logout', (req, res) => {
