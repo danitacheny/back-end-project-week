@@ -17,7 +17,7 @@ export const ERROR_FETCHING = 'ERROR_FETCHING';
 export const DELETE_ERROR = 'DELETE_ERROR';
 export const TOGGLE_COLLAB_MODAL = 'TOGGLE_COLLAB_MODAL';
 
-const URI = 'https://limitless-brushlands-24225.herokuapp.com';
+const URI = process.env.DB_URI || 'http://localhost:3030';
 
 export const fetchNotes = () => {
   return dispatch => {
@@ -44,7 +44,7 @@ export const addNote = note => {
       });
     };
   };
-  
+
   export const updateNote = note => {
     return dispatch => {
       axios
