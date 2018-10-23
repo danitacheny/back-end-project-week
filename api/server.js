@@ -16,27 +16,21 @@ const server = express();
 
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost/notes';
 mongoose
-  .connect(MONGO_URI)
+  .connect(
+    MONGO_URI,
+    { useNewUrlParser: true }
+  )
   .then(() => {
     console.log('Successfully connected to MongoDB');
   })
-  .catch(err => {
+  .catch((err) => {
     console.log('There was an error connecting to MongoDB', err);
   });
 
 server.use(cors(corsOptions));
 server.use(express.json());
-server.use(
-  session({
-    secret: 'rigby is a bird',
-    resave: false,
-    saveUninitialized: true,
-    auth: false,
-  })
-);
 
 server.use('/', userRoutes);
 server.use('/notes', noteRoutes);
-
 
 server.listen(port, () => console.log(`Server is listening on port ${port}`));
