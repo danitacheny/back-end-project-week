@@ -22,7 +22,7 @@ export const ERROR_FETCHING = 'ERROR_FETCHING';
 export const DELETE_ERROR = 'DELETE_ERROR';
 export const TOGGLE_COLLAB_MODAL = 'TOGGLE_COLLAB_MODAL';
 
-const URI = process.env.DB_URI || 'http://localhost:3030';
+const URI = process.env.REACT_APP_SERVER_URI || 'http://localhost:3030';
 
 updateHeaders();
 
