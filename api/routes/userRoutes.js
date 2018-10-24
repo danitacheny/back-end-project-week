@@ -31,13 +31,14 @@ router.post('/login', (req, res) => {
       msg: 'Please enter both a username and a password.',
     });
   }
+
   User.findOne({ username })
     .populate('notes')
     .then((foundUser) => {
       if (!foundUser)
         return res.status(400).json({ msg: 'Invalid credentials.' });
       foundUser
-        .checkPassword(password, res)
+        .checkPassword(password)
         .then((isValid) => {
           if (isValid) {
             const token = jwt.sign(
@@ -45,7 +46,7 @@ router.post('/login', (req, res) => {
               process.env.TOKEN_SECRET,
               { expiresIn: '1h' }
             );
-            res.status(200).json({ token });
+            res.status(200).json({ token, username: foundUser.username });
           } else {
             res.status(400).json({ msg: 'Invalid credentials.' });
           }
