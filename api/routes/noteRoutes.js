@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 const Note = require('../models/NoteSchema');
 const User = require('../models/UserSchema');
@@ -22,7 +23,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-  const { username } = req.session;
+  const { username } = req.user;
   User.findOne({ username })
     .populate('notes')
     .then(foundUser => {
