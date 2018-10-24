@@ -15,6 +15,7 @@ import {
   REGISTER_ERROR,
   USER_LOGGED_IN,
   LOGIN_ERROR,
+  CHECK_AUTH_ERROR,
 } from '../actions';
 
 const initialState = {
@@ -23,8 +24,8 @@ const initialState = {
   collabModalVisible: false,
   selectedNote: {},
   sortType: 'date',
-  loggedIn: false,
   error: null,
+  username: null
 };
 
 const sortNotes = (notes, sortType, prop) => {
@@ -104,8 +105,7 @@ const reducer = (state = initialState, action) => {
     case USER_LOGGED_IN:
       return {
         ...state,
-        notes: action.payload.notes,
-        loggedIn: true,
+        username: action.payload,
       };
     case LOGIN_ERROR:
       return {
@@ -116,7 +116,12 @@ const reducer = (state = initialState, action) => {
     case LOGOUT_USER:
       return {
         ...state,
-        loggedIn: false,
+        username: null,
+      };
+    case CHECK_AUTH_ERROR:
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;

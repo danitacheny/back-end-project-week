@@ -17,6 +17,7 @@ export const ERROR_FETCHING = 'ERROR_FETCHING';
 export const DELETE_ERROR = 'DELETE_ERROR';
 export const TOGGLE_COLLAB_MODAL = 'TOGGLE_COLLAB_MODAL';
 
+
 const URI = process.env.DB_URI || 'http://localhost:3030';
 
 export const fetchNotes = () => {
@@ -123,9 +124,9 @@ export const login = (userData, history) => {
     axios
       .post(`${URI}/login`, userData)
       .then(({ data }) => {
-        sessionStorage.setItem('username', userData.username);
-        dispatch({ type: USER_LOGGED_IN, payload: data });
-        history.push('/');
+        localStorage.setItem('token', data.token);
+        dispatch({ type: USER_LOGGED_IN, payload: data.username });
+        // history.push('/');
       })
       .catch(err => {
         dispatch({ type: LOGIN_ERROR, payload: err });
@@ -138,7 +139,7 @@ export const logout = () => {
     axios
       .post(`${URI}/logout`)
       .then(() => {
-        sessionStorage.removeItem('username');
+        localStorage.clear('token');
         dispatch({ type: LOGOUT_USER });
       })
       .catch(err => {
