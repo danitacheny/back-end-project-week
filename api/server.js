@@ -8,11 +8,12 @@ const userRoutes = require('./routes/userRoutes');
 const noteRoutes = require('./routes/noteRoutes');
 
 const corsOptions = {
-  origin: process.env.CLIENT_URI || `http://localhost:3000`,
+  origin: [`http://localhost:3000`, process.env.CLIENT_URI],
   credentials: true,
 };
 
 const server = express();
+server.use(cors(corsOptions));
 
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost/notes';
 
@@ -24,11 +25,10 @@ mongoose
   .then(() => {
     console.log('Successfully connected to MongoDB');
   })
-  .catch((err) => {
+  .catch(err => {
     console.log('There was an error connecting to MongoDB', err);
   });
 
-server.use(cors(corsOptions));
 server.use(express.json());
 
 server.use('/', userRoutes);
