@@ -11,7 +11,7 @@ export default ComposedComponent => {
     componentDidMount = () => {
       const token = localStorage.getItem('token');
 
-      if (token) {
+      if (token && !this.props.username) {
         this.props.checkAuth(token);
       }
     }
