@@ -44,6 +44,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  const { username } = req.user;
   const noteInfo = req.body;
   const note = new Note(noteInfo);
   const session = req.session;
@@ -67,7 +68,7 @@ router.post('/', (req, res) => {
   note
     .save()
     .then(savedNote => {
-      User.findOne({ username: session.username }, (err, user) => {
+      User.findOne({ username }, (err, user) => {
         if (err)
           return res
             .status(500)
