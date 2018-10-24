@@ -152,17 +152,4 @@ export const checkAuth = (token) => {
     }
   }
 }
-
-export const logout = () => {
-  return dispatch => {
-    axios
-      .post(`${URI}/logout`)
-      .then(() => {
-        localStorage.clear('token');
-        dispatch({ type: LOGOUT_USER });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
 };

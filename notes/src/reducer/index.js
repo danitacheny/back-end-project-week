@@ -11,7 +11,6 @@ import {
   SELECT_NOTE,
   SELECT_ERROR,
   SORT_NOTES,
-  LOGOUT_USER,
   REGISTER_ERROR,
   USER_LOGGED_IN,
   LOGIN_ERROR,
@@ -112,11 +111,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         loggingIn: false,
         error: action.payload,
-      };
-    case LOGOUT_USER:
-      return {
-        ...state,
-        username: null,
       };
     case CHECK_AUTH_ERROR:
       return {

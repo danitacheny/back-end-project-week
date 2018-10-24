@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/Sidebar.css';
 
-import { logout } from '../actions';
-
 class Sidebar extends React.Component {
   logout = () => {
-    this.props.logout();
+    localStorage.clear('token');
     window.location.reload();
   };
 
@@ -39,4 +37,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { logout })(Sidebar);
+export default connect(mapStateToProps)(Sidebar);
