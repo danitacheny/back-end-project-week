@@ -10,7 +10,6 @@ import Note from './comps/Note';
 import NewNote from './comps/NewNote';
 import EditNote from './comps/EditNote';
 import Modal from './comps/Modal';
-import Login from './comps/Login';
 import Register from './comps/Register';
 import CollabModal from './comps/CollabModal';
 
