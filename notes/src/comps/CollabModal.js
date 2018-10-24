@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleCollabModal, addNote } from '../actions';
+import { toggleCollabModal, addCollab } from '../actions';
 import '../styles/CollabModal.css';
 
 class CollabModal extends React.Component {
@@ -11,10 +11,10 @@ class CollabModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     this.props.toggleCollabModal();
-    this.props.addNote({
-      ...this.props.selectedNote,
-      username: this.state.email,
-    });
+    this.props.addCollab(
+      this.props.selectedNote._id,
+      this.state.email
+    );
   };
 
   handleInput = event => {
@@ -46,6 +46,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { toggleCollabModal, addNote })(
+export default connect(mapStateToProps, { toggleCollabModal, addCollab })(
   CollabModal
 );

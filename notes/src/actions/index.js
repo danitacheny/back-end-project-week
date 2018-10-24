@@ -73,6 +73,12 @@ export const toggleCollabModal = () => {
   };
 };
 
+export const addCollab = (id, email) => {
+  return dispatch => {
+    axios.put(`${URI}/notes/collab/${id}`, { email })
+  }
+}
+
 export const toggleModal = () => {
   return {
     type: TOGGLE_MODAL,

@@ -93,6 +93,19 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/collab/:id', (req, res) => {
+  const { email } = req.body;
+  const { id } = req.params;
+  User.findOneAndUpdate({ email }, { $push: { notes: id } }, (err, note) => {
+  User.findOneAndUpdate({ username: email }, { $push: { notes: id } }, (err, user) => {
+    if (err)
+      res.status(500).json({
+        msg: 'there was an error adding the note to the collaborator account',
+        err,
+      });
+  });
+});
+
 router.put('/', (req, res) => {
   const note = req.body;
   Note.findByIdAndUpdate(note._id, note, { new: true })
