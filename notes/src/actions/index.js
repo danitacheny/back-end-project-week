@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -11,6 +12,7 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const USER_LOGGED_IN = 'USER_LOGGED_IN';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const CHECK_AUTH_ERROR = 'CHECK_AUTH_ERROR';
 export const ERROR_ADDING_NOTE = 'ERROR_ADDING_NOTE';
 export const NOTES_FETCHED = 'NOTES_FETCHED';
 export const ERROR_FETCHING = 'ERROR_FETCHING';
@@ -133,6 +135,22 @@ export const login = (userData, history) => {
       });
   };
 };
+
+export const checkAuth = (token) => {
+
+  try {
+    const { username } = jwtDecode(token);
+    return {
+      type: USER_LOGGED_IN,
+      payload: username
+    }
+  } catch (err) {
+    return {
+      type: CHECK_AUTH_ERROR,
+      payload: err
+    }
+  }
+}
 
 export const logout = () => {
   return dispatch => {
