@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
+axios.defaults.headers.authorization = localStorage.getItem('token');
 
 export const UPDATE_ERROR = 'UPDATE_ERROR';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';

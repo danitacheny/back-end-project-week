@@ -5,11 +5,19 @@ const Note = require('../models/NoteSchema');
 const User = require('../models/UserSchema');
 
 router.use((req, res, next) => {
-  const session = req.session;
-  if (session.username) {
+  const token = req.headers.authorization;
+  let verified;
+  try {
+    verified = jwt.verify(token, process.env.TOKEN_SECRET);
+  } catch (err) {
+    return res.status(401).json({ err, msg: 'You are not authorized.' });
+  }
+
+  if (verified) {
+    req.user = verified;
     next();
   } else {
-    res.status(400).json({ error: 'Not logged in' });
+    res.status(401).json({ error: 'Not logged in' });
   }
 });
 
