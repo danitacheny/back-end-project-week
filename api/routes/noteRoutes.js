@@ -23,14 +23,14 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-  const { username } = req.user;
-  User.findOne({ username })
+  const { id } = req.user;
+  User.findOne({ _id: id })
     .populate('notes')
     .then(foundUser => {
       if (!foundUser) res.status(404).json({ msg: 'User does not exist' });
       res.status(200).json({ notes: foundUser.notes });
     })
-    .catch(err => res.error(err));
+    .catch(err => res.status(500).json({ err, msg: 'There was a error connecting with the database.'}));
 });
 
 router.get('/:id', (req, res) => {
@@ -44,35 +44,19 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { username } = req.user;
+  const { id } = req.user;
   const noteInfo = req.body;
+  noteInfo.creator = id;
   const note = new Note(noteInfo);
-  const session = req.session;
-  if (req.body.username) {
-    User.findOneAndUpdate(
-      { username: req.body.username },
-      { $push: { notes: noteInfo } },
-      (err, note) => {
-        if (err)
-          res
-            .status(500)
-            .json({
-              msg:
-                'there was an error adding the note to the collaborator account',
-              err,
-            });
-      }
-    );
-    return;
-  }
   note
     .save()
     .then(savedNote => {
-      User.findOne({ username }, (err, user) => {
-        if (err)
+      User.findOne({ _id: id }, (err, user) => {
+        if (err) {
           return res
             .status(500)
             .json({ msg: 'There was an error adding the note.' });
+        }
         user.notes.push(savedNote);
         user
           .save()
@@ -96,11 +80,10 @@ router.post('/', (req, res) => {
 router.put('/collab/:id', (req, res) => {
   const { email } = req.body;
   const { id } = req.params;
-  User.findOneAndUpdate({ email }, { $push: { notes: id } }, (err, note) => {
   User.findOneAndUpdate({ username: email }, { $push: { notes: id } }, (err, user) => {
     if (err)
       res.status(500).json({
-        msg: 'there was an error adding the note to the collaborator account',
+        msg: 'There was an error adding the note to the collaborator account',
         err,
       });
   });
