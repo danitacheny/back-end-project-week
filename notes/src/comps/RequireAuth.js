@@ -1,20 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Login from './Login';
+
+import { checkAuth } from '../actions';
+
+
 export default ComposedComponent => {
   class RequireAuth extends React.Component {
-    componentWillMount() {
-      if (!sessionStorage.getItem('username')) {
-        this.props.history.push('/login');
+    componentDidMount = () => {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        this.props.checkAuth(token);
       }
     }
+
 
     render() {
       return (
         <div>
-          {sessionStorage.getItem('username') ? (
+          {this.props.username ? (
             <ComposedComponent {...this.props} />
-          ): null}
+          ): <Login />}
         </div>
       );
     }
@@ -22,9 +30,9 @@ export default ComposedComponent => {
 
   const mapStateToProps = state => {
     return {
-      authed: state.authed,
+      username: state.username
     };
   };
 
-  return connect(mapStateToProps)(RequireAuth);
+  return connect(mapStateToProps, { checkAuth })(RequireAuth);
 };

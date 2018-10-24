@@ -37,7 +37,6 @@ class App extends React.Component {
           <Route path="/view/:id" component={RequireAuth(Note)} />
           <Route path="/new" component={RequireAuth(NewNote)} />
           <Route path="/edit/:id" component={RequireAuth(EditNote)} />
-          <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
         </div>
       </div>
