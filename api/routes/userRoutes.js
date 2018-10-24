@@ -42,7 +42,7 @@ router.post('/login', (req, res) => {
         .then((isValid) => {
           if (isValid) {
             const token = jwt.sign(
-              { username: foundUser.username },
+              { username: foundUser.username, id: foundUser._id },
               process.env.TOKEN_SECRET,
               { expiresIn: '1h' }
             );
