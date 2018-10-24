@@ -1,7 +1,10 @@
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-axios.defaults.headers.authorization = localStorage.getItem('token');
+
+const updateHeaders = () => {
+  axios.defaults.headers.authorization = localStorage.getItem('token');
+};
 
 export const UPDATE_ERROR = 'UPDATE_ERROR';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
@@ -9,7 +12,6 @@ export const DELETE_NOTE = 'DELETE_NOTE';
 export const SELECT_NOTE = 'SELECT_NOTE';
 export const SELECT_ERROR = 'SELECT_ERROR';
 export const SORT_NOTES = 'SORT_NOTES';
-export const LOGOUT_USER = 'LOGOUT_USER';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const USER_LOGGED_IN = 'USER_LOGGED_IN';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
@@ -20,10 +22,12 @@ export const ERROR_FETCHING = 'ERROR_FETCHING';
 export const DELETE_ERROR = 'DELETE_ERROR';
 export const TOGGLE_COLLAB_MODAL = 'TOGGLE_COLLAB_MODAL';
 
-
 const URI = process.env.DB_URI || 'http://localhost:3030';
 
+updateHeaders();
+
 export const fetchNotes = () => {
+  updateHeaders();
   return dispatch => {
     axios
       .get(`${URI}/notes`)
@@ -46,12 +50,12 @@ export const addNote = note => {
       .catch(err => {
         dispatch({ type: ERROR_ADDING_NOTE, payload: err });
       });
-    };
   };
+};
 
-  export const updateNote = note => {
-    return dispatch => {
-      axios
+export const updateNote = note => {
+  return dispatch => {
+    axios
       .put(`${URI}/notes`, note)
       .then(() => {
         dispatch(fetchNotes());
@@ -66,8 +70,8 @@ export const addNote = note => {
 export const toggleCollabModal = () => {
   return {
     type: TOGGLE_COLLAB_MODAL,
-  }
-}
+  };
+};
 
 export const toggleModal = () => {
   return {
@@ -94,14 +98,14 @@ export const deleteNote = id => {
 export const selectNote = id => {
   return dispatch => {
     axios
-    .get(`${URI}/notes/${id}`)
-    .then(({ data }) => {
-      dispatch({ type: SELECT_NOTE, payload: data });
-    })
-    .catch(err => {
-      dispatch({ type: SELECT_ERROR, payload: err});
-    })
-  }
+      .get(`${URI}/notes/${id}`)
+      .then(({ data }) => {
+        dispatch({ type: SELECT_NOTE, payload: data });
+      })
+      .catch(err => {
+        dispatch({ type: SELECT_ERROR, payload: err });
+      });
+  };
 };
 
 export const sortNotes = sort => {
@@ -123,13 +127,13 @@ export const registerUser = userData => {
 };
 
 export const login = (userData, history) => {
+  updateHeaders();
   return dispatch => {
     axios
       .post(`${URI}/login`, userData)
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
         dispatch({ type: USER_LOGGED_IN, payload: data.username });
-        // history.push('/');
       })
       .catch(err => {
         dispatch({ type: LOGIN_ERROR, payload: err });
@@ -137,19 +141,17 @@ export const login = (userData, history) => {
   };
 };
 
-export const checkAuth = (token) => {
-
+export const checkAuth = token => {
   try {
     const { username } = jwtDecode(token);
     return {
       type: USER_LOGGED_IN,
-      payload: username
-    }
+      payload: username,
+    };
   } catch (err) {
     return {
       type: CHECK_AUTH_ERROR,
-      payload: err
-    }
+      payload: err,
+    };
   }
-}
 };
