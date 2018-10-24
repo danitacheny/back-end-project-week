@@ -22,7 +22,7 @@ class Sidebar extends React.Component {
           <Link to="/new" className="sidebar__button">
             <div>+ Create New Note</div>
           </Link>
-          {sessionStorage.getItem('username') && (
+          {this.props.username && (
             <Link to="/" onClick={this.logout}>
               <div className="sidebar__button">Logout</div>
             </Link>
@@ -35,8 +35,8 @@ class Sidebar extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.loggedIn,
-  };
-};
+    username: state.username,
+  }
+}
 
 export default connect(mapStateToProps, { logout })(Sidebar);
