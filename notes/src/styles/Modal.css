@@ -6,7 +6,7 @@
   justify-content: center;
   margin: auto;
   width: 1063px;
-  height: 1070px;;
+  height: 100%;
   background: rgba(211, 211, 211, 0.8);
   border: 1px solid rgb(157, 157, 157);
 }
@@ -56,9 +56,11 @@
   background: rgb(210, 1, 26);
   margin-left: 80px;
   letter-spacing: 0.7px;
+  cursor: pointer;
 }
 
 .no {
   background: rgb(42, 192, 196);
   margin-right: 69px;
+  cursor: pointer;
 }
