@@ -70,7 +70,7 @@ class Register extends React.Component {
           />
           <div className="register__buttons">
             <input type="submit" value="Submit" className="register__button" />
-            <Link to="/login">
+            <Link to="/">
               <button className="register__button login">Back to login</button>
             </Link>
           </div>
