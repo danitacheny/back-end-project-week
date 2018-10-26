@@ -8,7 +8,7 @@ mongooseTypes.loadTypes(mongoose, 'email');
 const Email = mongoose.SchemaTypes.Email;
 
 const UserSchema = new mongoose.Schema({
-  username: {
+  email: {
     type: Email,
     unique: true,
     lowercase: true,
