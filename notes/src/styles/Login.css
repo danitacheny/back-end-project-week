@@ -19,7 +19,7 @@
   margin-top: 5px;
 }
 
-.login__username-field {
+.login__email-field {
   max-width: 500px;
   width: 411px;
   height: 30px;
@@ -33,7 +33,7 @@
   margin-bottom: 15px;
 }
 
-.login__username-field:focus {
+.login__email-field:focus {
   outline: 0;
 }
 

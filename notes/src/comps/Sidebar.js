@@ -20,7 +20,7 @@ class Sidebar extends React.Component {
           <Link to="/new" className="sidebar__button">
             <div>+ Create New Note</div>
           </Link>
-          {this.props.username && (
+          {this.props.email && (
             <Link to="/" onClick={this.logout}>
               <div className="sidebar__button">Logout</div>
             </Link>
@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    username: state.username,
+    email: state.email,
   }
 }
 

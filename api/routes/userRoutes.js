@@ -6,10 +6,10 @@ const User = require('../models/UserSchema');
 
 router.post('/register', (req, res) => {
   const newUser = req.body;
-  if (!newUser.username || !newUser.password) {
+  if (!newUser.email || !newUser.password) {
     res
       .status(400)
-      .json({ msg: 'Please provide a username and a password.', error: err });
+      .json({ msg: 'Please provide a email and a password.', error: err });
   }
   const user = new User(newUser);
   user
@@ -25,14 +25,14 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { email, password } = req.body;
+  if (!email || !password) {
     res.status(400).json({
-      msg: 'Please enter both a username and a password.',
+      msg: 'Please enter both a email and a password.',
     });
   }
 
-  User.findOne({ username })
+  User.findOne({ email })
     .populate('notes')
     .then((foundUser) => {
       if (!foundUser)
@@ -42,11 +42,11 @@ router.post('/login', (req, res) => {
         .then((isValid) => {
           if (isValid) {
             const token = jwt.sign(
-              { username: foundUser.username, id: foundUser._id },
+              { email: foundUser.email, id: foundUser._id },
               process.env.TOKEN_SECRET,
               { expiresIn: '1h' }
             );
-            res.status(200).json({ token, username: foundUser.username });
+            res.status(200).json({ token, email: foundUser.email });
           } else {
             res.status(400).json({ msg: 'Invalid credentials.' });
           }

@@ -139,7 +139,7 @@ export const login = (userData, history) => {
       .post(`${URI}/login`, userData)
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
-        dispatch({ type: USER_LOGGED_IN, payload: data.username });
+        dispatch({ type: USER_LOGGED_IN, payload: data.email });
       })
       .catch(err => {
         dispatch({ type: LOGIN_ERROR, payload: err });
@@ -149,10 +149,10 @@ export const login = (userData, history) => {
 
 export const checkAuth = token => {
   try {
-    const { username } = jwtDecode(token);
+    const { email } = jwtDecode(token);
     return {
       type: USER_LOGGED_IN,
-      payload: username,
+      payload: email,
     };
   } catch (err) {
     return {

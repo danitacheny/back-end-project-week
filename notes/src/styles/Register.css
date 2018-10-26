@@ -19,7 +19,7 @@
   margin-top: 5px;
 }
 
-.register__username-field {
+.register__email-field {
   max-width: 500px;
   width: 411px;
   height: 30px;
@@ -33,7 +33,7 @@
   margin-bottom: 15px;
 }
 
-.register__username-field:focus {
+.register__email-field:focus {
   outline: 0;
 }
 

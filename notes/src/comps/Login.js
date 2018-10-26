@@ -6,7 +6,7 @@ import '../styles/Login.css';
 
 class Login extends React.Component {
   state = {
-    username: '',
+    email: '',
     password: '',
     message: null,
   };
@@ -17,12 +17,12 @@ class Login extends React.Component {
 
   submitLogin = event => {
     event.preventDefault();
-    const { username, password } = this.state;
-    if (!username || !password) {
-      this.setState({ message: 'Please enter a username and a password.' });
+    const { email, password } = this.state;
+    if (!email || !password) {
+      this.setState({ message: 'Please enter a email and a password.' });
       return;
     }
-    this.props.login({ username, password }, this.props.history);
+    this.props.login({ email, password }, this.props.history);
   };
 
   updateField = event => {
@@ -40,11 +40,11 @@ class Login extends React.Component {
         <form className="login__form" onSubmit={this.submitLogin}>
           <input
             type="text"
-            name="username"
-            value={this.state.username}
-            placeholder="username"
+            name="email"
+            value={this.state.email}
+            placeholder="email"
             onChange={this.updateField}
-            className="login__username-field"
+            className="login__email-field"
           />
           <input
             type="password"

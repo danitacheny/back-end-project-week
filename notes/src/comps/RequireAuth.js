@@ -11,7 +11,7 @@ export default ComposedComponent => {
     componentDidMount = () => {
       const token = localStorage.getItem('token');
 
-      if (token && !this.props.username) {
+      if (token && !this.props.email) {
         this.props.checkAuth(token);
       }
     }
@@ -20,7 +20,7 @@ export default ComposedComponent => {
     render() {
       return (
         <div>
-          {this.props.username ? (
+          {this.props.email ? (
             <ComposedComponent {...this.props} />
           ): <Login />}
         </div>
@@ -30,7 +30,7 @@ export default ComposedComponent => {
 
   const mapStateToProps = state => {
     return {
-      username: state.username
+      email: state.email
     };
   };
 

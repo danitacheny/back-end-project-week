@@ -24,7 +24,7 @@ const initialState = {
   selectedNote: {},
   sortType: 'date',
   error: null,
-  username: null
+  email: null
 };
 
 const sortNotes = (notes, sortType, prop) => {
@@ -104,7 +104,7 @@ const reducer = (state = initialState, action) => {
     case USER_LOGGED_IN:
       return {
         ...state,
-        username: action.payload,
+        email: action.payload,
       };
     case LOGIN_ERROR:
       return {

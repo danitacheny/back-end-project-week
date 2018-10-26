@@ -6,7 +6,7 @@ import '../styles/Register.css';
 
 class Register extends React.Component {
   state = {
-    username: '',
+    email: '',
     password: '',
     passwordRepeat: '',
     message: null,
@@ -18,16 +18,16 @@ class Register extends React.Component {
 
   submitRegistration = event => {
     event.preventDefault();
-    const { username, password, passwordRepeat } = this.state;
-    if (!username || !password) {
-      this.setState({ message: 'Please enter a username and a password.' });
+    const { email, password, passwordRepeat } = this.state;
+    if (!email || !password) {
+      this.setState({ message: 'Please enter a email and a password.' });
       return;
     }
     if (password !== passwordRepeat) {
       this.setState({ message: 'The passwords do not match.' });
       return;
     }
-    this.props.registerUser({ username, password });
+    this.props.registerUser({ email, password });
     this.props.history.push('/');
   };
 
@@ -37,7 +37,7 @@ class Register extends React.Component {
       [event.target.name]: event.target.value,
     });
   };
-  
+
   render() {
     return (
       <div className="register__container">
@@ -46,11 +46,11 @@ class Register extends React.Component {
         <form className="register__form" onSubmit={this.submitRegistration}>
           <input
             type="text"
-            name="username"
-            value={this.state.username}
+            name="email"
+            value={this.state.email}
             placeholder="email"
             onChange={this.updateField}
-            className="register__username-field"
+            className="register__email-field"
           />
           <input
             type="password"
